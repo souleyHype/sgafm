@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: A hello world application
+
+Parameters:
+  Bucket:
+    Type: String
+  CodeZipKey:
+    Type: String
+
+Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+        StageName: prod
+        DefinitionBody:
+            swagger: 2.0
+            info:
+              title:
+                Ref: AWS::StackName
+            paths:
+              "/records":
+                get:
+                  x-amazon-apigateway-integration:
+                    httpMethod: POST
+                    type: aws_proxy
+                    uri:
+                      Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyLambdaFunction.Arn}/invocations
+                  responses: {}
+
+  CreateRecord:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambdas/createRecord.handler
+      Runtime: python3.6
+      CodeUri:
+        Bucket: !Ref Bucket
+        Key: !Ref CodeZipKey
+      Events:
+        GetApi:
+          Type: Api
+          Properties:
+            Path: /records
+            Method: GET
+            RestApiId: 
+                Ref: MyApi
+
+  
+
+  

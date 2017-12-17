@@ -1,0 +1,11 @@
+{
+  "name": "sgafm",
+  "version": "1.0.0",
+  "description": "SGAFM est un système de gestion des documents fonciers au Mali.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Souleymane Coulibaly, Sidi Konate",
+  "license": "ISC"
+}
